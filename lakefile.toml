@@ -1,0 +1,39 @@
+name = "dL-tolcontract"
+version = "0.1.0"
+keywords = ["math"]
+defaultTargets = ["DLTolContract"]
+
+[leanOptions]
+pp.unicode.fun = true
+relaxedAutoImplicit = false
+weak.linter.mathlibStandardSet = true
+maxSynthPendingDepth = 3
+
+# Foundation: single-program dL (library `DLLean`), pinned to the DI milestone.
+# NFM'26 tolerance contracts are a new layer on the whole family; Theorem 1
+# (contract-governance soundness) needs only dL-lean (syntax, ⟦·⟧, FV/BV/MBV,
+# coincidence/bound-effect, loop induction). Theorem 2 additionally reuses
+# dL-qsafety (HSCC23) and dL-caltiming (CSF'25) timed Q-safety.
+#
+# Release pin (git+tag), mirroring the rest of the family:
+#   git = "https://github.com/UNCC-FORTRESS/dL-formalization-Lean.git"
+#   rev = "v0.1.0-DI"
+# For local development we path-require the checked-out foundation to reuse its
+# built .lake (mathlib olean cache), avoiding a fresh mathlib rebuild.
+[[require]]
+name = "dL-lean"
+path = "../dL-lean"
+
+[[lean_lib]]
+name = "DLTolContract"
+
+# Quantitative layer for Theorem 2 (Items 4/5 timed Q-safety).
+[[require]]
+name = "dL-qsafety"
+path = "../dL-qsafety"
+
+# CSF'25 timed Q-safety, pinned to its released milestone tag.
+[[require]]
+name = "dL-caltiming"
+git = "https://github.com/UNCC-FORTRESS/CSF25-Timed-Qsafety-Lean.git"
+rev = "v0.1.0-CSF25"
