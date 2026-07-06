@@ -175,7 +175,46 @@ build): the Boolean `Safe` shadow is replaced by dL-qsafety's real signed margin
   (`= IsGLB (D.val '' spTimed …) u`) yields the per-state margin lower bound via
   `IsGLB.1`.
 
-**Remaining for full Theorem 2 (task #6):** only the phase-decomposition premise
-`hClassify` — the abnormality-duration induction (Items 5/6, Item 6's ε-connecting
-state). The Lemma-1 crux, the quantitative GLB reduction, and the Item 4/5 reuse
-are all proved. Item 6 tightness audit deferred. All theorems `#print axioms`-clean.
+## Theorem 2 loop induction — PROVED (Theorem2Induction.lean)
+
+The recurring→single-cycle reduction is mechanized (boundary-granular, the
+faithful granularity — Theorem 2's conclusion is Q-safety over loop boundaries):
+
+* `phase_invariant` — the boundary-granular `Phase` invariant holds at every
+  reachable boundary, by `ReflTransGen` loop induction from the single-cycle phase
+  transitions.
+* `hClassify_of_phase` — discharges the phase-decomposition premise.
+* `theorem2_quant` — **capstone**: every reachable state has margin `≥ min(u,u₁)`
+  (`= T-safe^[0,∞)_{u₂}`, `u₂ ≥ min(u,u₁)`), reduced entirely to **single-cycle**
+  premises. The unbounded/recurring loop is fully discharged.
+
+**Remaining (task #6) — single-cycle obligations only, no loop:** the two
+single-cycle phase-transition premises `hNormalStep` (Item 3 + the F5 onset
+condition) and `hRecovery` (Items 5/6 — the `ε`-connecting-state recovery). These
+are the per-cycle timed Q-safety facts the paper explicitly reuses from [80]
+("Item 4 and 5 … not the focus of this work"). **Item 6's `τ ≤ tm ≤ δ−ε` lives
+inside `hRecovery`** and its tightness (whether `−ε` is exactly needed) is
+confirmable only by unfolding that premise — not yet done. All proved theorems
+`#print axioms`-clean.
+
+## F5 — Theorem 2 base case: `ϕinv` at abnormality onset (proof-completeness note)
+
+The proof sketch's base case says "let `ωm` be the abnormality start; **by Item 3**,
+`ωm ⊨ ϕinv`." Item 3 (`ϕinv → [αn]ϕinv`) preserves `ϕinv` only across **normal**
+cycles (`αn`), giving `ϕinv` at the entering cooldown boundary `ωb`. The abnormality
+start `ωm` is reached across the **onset** `ωb → ωm` = `sensing (x_s := *) ;
+abnormalStart` — sensor havoc + flag flip, *not* an `αn` step. So Item 3 alone does
+**not** yield `ϕinv ωm`.
+
+`ϕinv ωm` is genuinely required (it is Item 4's own precondition). It follows only
+under an **onset condition** — `ϕinv` survives the sensor-havoc onset — which is
+**not among Items 1–6**. The water-tank `ϕinv` contains `34 ≤ x_s ≤ 37`, and the
+abnormal `x_s` (constrained only by `ψt`, whose `xo≥35` branch `x_s ≤ xo` has no
+lower bound) need not satisfy it; the instance is rescued by the §5 **sensing
+assumption `x_s ≥ x_p`** (prose, not an Item) plus the over-approximation design.
+
+**Verdict:** not an unsoundness — Theorem 2's statement is sound (Item 4 demands
+`ϕinv`) and the water tank is sound (sensing assumption). But the general proof from
+Items 1–6 needs an onset condition the "by Item 3" sketch glosses — same one-symbol-
+two-states shape as F1/F2. The mechanization carries it as an explicit hypothesis
+(`ϕinv` at each abnormality start) in `hClassify`.
