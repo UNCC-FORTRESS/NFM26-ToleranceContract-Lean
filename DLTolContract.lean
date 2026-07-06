@@ -7,3 +7,4 @@ import DLTolContract.Lemma1
 import DLTolContract.Theorem2Reduction
 import DLTolContract.Theorem2Quant
 import DLTolContract.Theorem2Induction
+import DLTolContract.Item6

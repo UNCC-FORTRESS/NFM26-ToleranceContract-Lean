@@ -218,3 +218,28 @@ assumption `x_s ≥ x_p`** (prose, not an Item) plus the over-approximation desi
 Items 1–6 needs an onset condition the "by Item 3" sketch glosses — same one-symbol-
 two-states shape as F1/F2. The mechanization carries it as an explicit hypothesis
 (`ϕinv` at each abnormality start) in `hClassify`.
+
+## Item 6 tightness audit — `τ ≤ tm ≤ δ − ϵ` is exactly tight (verified, Item6.lean)
+
+Item 6 enters the proof only inside `hRecovery`, via the **connecting control
+cycle**: after Item 5 re-establishes `ϕinv` at recovery time `tm`, one normal
+cycle `αn` must complete within the cooldown `[tm, δ]` (the controller fires every
+`≤ ϵ`, so it finishes by `tm+ϵ`) to carry `ϕinv` to the next abnormality (`≥ δ`).
+
+`ConnectingFits τ tm δ ϵ := τ ≤ tm ∧ tm + ϵ ≤ δ`, and:
+
+* `item6_equiv` — `ConnectingFits ⟺ τ ≤ tm ≤ δ − ϵ`. **Item 6's stated form is
+  exactly the connecting-cycle condition** — neither stronger nor weaker.
+* `item6_epsilon_tight` / `item6_epsilon_needed` — **`−ϵ` is load-bearing**: the
+  naive `tm ≤ δ` fails (at `tm = δ`, or any `δ−ϵ < tm ≤ δ`, the cycle overruns by
+  up to `ϵ`). The `−ϵ` is **precisely one max-latency control cycle of slack** —
+  confirming the prediction.
+* `item6_tau_tight` — **`τ ≤ tm` is load-bearing**: `tm < τ` leaves the state
+  possibly still in the abnormality, where Item 5 does not apply.
+* `item6_window_nonempty` / `item6_window_empty` — a valid `tm` exists iff
+  `τ + ϵ ≤ δ`, the contract-parameter design constraint for Theorem 2 to apply.
+
+**Verdict:** Item 6 is **tight and correctly stated** — both bounds load-bearing,
+`−ϵ` exactly the latency slack. No finding. (Contrast the Theorem-1 init values,
+where `tcd = −δ` was tight but `tab = 0` was stronger than needed; here both bounds
+are exactly needed.)
