@@ -9,31 +9,29 @@ relaxedAutoImplicit = false
 weak.linter.mathlibStandardSet = true
 maxSynthPendingDepth = 3
 
-# Foundation: single-program dL (library `DLLean`), pinned to the DI milestone.
-# NFM'26 tolerance contracts are a new layer on the whole family; Theorem 1
-# (contract-governance soundness) needs only dL-lean (syntax, ⟦·⟧, FV/BV/MBV,
-# coincidence/bound-effect, loop induction). Theorem 2 additionally reuses
-# dL-qsafety (HSCC23) and dL-caltiming (CSF'25) timed Q-safety.
+# NFM'26 tolerance contracts are a new layer on the whole family, pinned to the
+# released milestone tags of the foundations.
 #
-# Release pin (git+tag), mirroring the rest of the family:
-#   git = "https://github.com/UNCC-FORTRESS/dL-formalization-Lean.git"
-#   rev = "v0.1.0-DI"
-# For local development we path-require the checked-out foundation to reuse its
-# built .lake (mathlib olean cache), avoiding a fresh mathlib rebuild.
+# dL-lean (library `DLLean`): dL syntax, ⟦·⟧, FV/BV/MBV, coincidence/bound-effect,
+# loop induction. Needed by everything.
 [[require]]
 name = "dL-lean"
-path = "../dL-lean"
+git = "https://github.com/UNCC-FORTRESS/dL-formalization-Lean.git"
+rev = "v0.1.0-DI"
 
-[[lean_lib]]
-name = "DLTolContract"
-
-# Quantitative layer for Theorem 2 (Items 4/5 timed Q-safety).
+# dL-qsafety (library `DLQSafety`): the signed safety distance `Dist`, over which
+# the quantitative Theorem 2 is stated.
 [[require]]
 name = "dL-qsafety"
-path = "../dL-qsafety"
+git = "https://github.com/UNCC-FORTRESS/HSCC26-Qsafety-Lean.git"
+rev = "v0.1.0-HSCC23"
 
-# CSF'25 timed Q-safety, pinned to its released milestone tag.
+# dL-caltiming (library `DLCalTiming`): CSF'25 timed Q-safety `TSafe`, the object
+# of Theorem 2's Items 4/5.
 [[require]]
 name = "dL-caltiming"
 git = "https://github.com/UNCC-FORTRESS/CSF25-Timed-Qsafety-Lean.git"
 rev = "v0.1.0-CSF25"
+
+[[lean_lib]]
+name = "DLTolContract"
