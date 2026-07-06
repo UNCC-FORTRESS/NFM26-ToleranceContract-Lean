@@ -205,7 +205,7 @@ theorem tcHPfixed_equivariant {S : Scheme V} (hd : S.Distinct) {ψn ψt : Formul
 /-! ## Lifting to the loop, given `tc`-purity of `sensing`/`ctrl_logic`/`plant`
 
 The equivariance of `sensing`, `ctrl_logic`, `plant` is the **explicit `tc`-purity
-hypothesis** whose absence made Lemma 1 false (F3). For the paper's water tank it
+hypothesis** without which the realignment fails. For the paper's water tank it
 holds: `ctrl` reads only the local clock `tl`, and `plant`'s `tc' = 1` clock is
 translation-invariant. -/
 

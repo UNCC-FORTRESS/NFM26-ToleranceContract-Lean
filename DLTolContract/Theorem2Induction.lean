@@ -24,8 +24,8 @@ are premises:
 * `hInit` — `ϕinit ∧ ϕpre → ϕinv` (Item 3, initialisation).
 * `hNormalStep` — from a normal boundary, one cycle stays normal or opens a new
   abnormality window whose start satisfies `ϕinv`. **This is where Item 3 and the
-  F5 onset condition enter** (`ϕinv` must survive the sensor-havoc onset — the
-  gap the sketch's "by Item 3" glosses; carried explicitly here).
+  onset condition enter** (`ϕinv` must survive the sensor-havoc onset — carried
+  explicitly here, since Item 3 covers only normal cycles).
 * `hRecovery` — from an in-window abnormality state, one cycle stays in-window or
   recovers to `ϕinv`. **This is where Items 5/6 enter** (the `ε`-connecting-state
   recovery; the timing `τ ≤ tm ≤ δ−ε` lives inside this premise).
@@ -112,9 +112,9 @@ Q-safety margin `≥ min(u,u₁)` — the paper's `T-safe^[0,∞)_{u₂}`, `u₂
 
 Everything unbounded/recurring is discharged. What remains are exactly the
 **single-cycle** premises the paper reuses from timed Q-safety (Items 3/4/5, the
-F5 onset condition, and Item 6's timing inside `hRecovery`) — none of which
-mention the loop. This is the faithful statement of "recurring cycles reduce to a
-single canonical cycle." -/
+onset condition, and Item 6's timing inside `hRecovery`) — none of which mention
+the loop. This is the faithful statement of "recurring cycles reduce to a single
+canonical cycle." -/
 theorem theorem2_quant {V : Type*} [DecidableEq V] {S : Scheme V} (hd : S.Distinct)
     {sensing ctrlLogic plant : Program V} {ψn ψt : Formula V} {τ δ : ℝ}
     (hψn : ∀ (T : ℝ) (s : State V), Formula.sat ψn (shiftBy S T s) ↔ Formula.sat ψn s)
